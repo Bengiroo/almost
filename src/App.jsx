@@ -4,9 +4,9 @@ import GridArea from './GridArea.jsx';
 import ControlArea from './ControlArea.jsx'; // Assuming ControlArea is another component
 
 const App = () => {
-  const [mode, setMode] = useState('defense'); // 'defense' or 'offense'
+  const [mode, setMode] = useState('offense'); // 'offense' or 'defense'
 
-  const toggleMode = () => setMode(mode === 'defense' ? 'offense' : 'defense');
+  const toggleMode = () => setMode(mode === 'offense' ? 'defense' : 'offense');
 
   return (
     <div className="main-layout">

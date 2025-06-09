@@ -84,11 +84,11 @@ export default function ApiSpinnerRow({ isLocked, fireResult }) {
             key={idx}
             className="spinner-history-value"
             style={{
-              color: getValueColor(num, fireResult), // Reflect the color logic of the current box
+              color: getValueColor(num, fireResult),
               opacity: 1,
               filter: "none",
-              textShadow: "none", // Remove neon glow effect
-              margin: "0 0.2em", // Add horizontal spacing between numbers
+              textShadow: "none",
+              margin: "0 0.2em",
             }}
           >
             {num}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ApiSpinnerRow from "./ApiSpinnerRow";
 
 const shipSizeOptions = [
@@ -17,7 +17,7 @@ const missileSizeOptions = [
   { label: "8x3", width: 8, height: 3 },
 ];
 
-export default function ControlArea({ mode, toggleMode }) {
+export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
   const [sliderValue, setSliderValue] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
   const [fireResult, setFireResult] = useState(null);
@@ -28,7 +28,7 @@ export default function ControlArea({ mode, toggleMode }) {
       ? `Ship: ${shipSizeOptions[sliderValue]?.width}x${shipSizeOptions[sliderValue]?.min}`
       : `Missile: ${missileSizeOptions[sliderValue]?.label}`;
 
-  // For demo: Handle slider input
+  // Handle slider input
   const handleSliderChange = (e) => {
     setSliderValue(Number(e.target.value));
     setFireResult(null); // Reset result on change
@@ -50,101 +50,81 @@ export default function ControlArea({ mode, toggleMode }) {
     setIsLocked(false);
   };
 
-  const btnColor = mode === 'defense' ? '#3d40ff' : '#ff2400';
-  const btnText = mode === 'defense' ? 'OFFENSE' : 'DEFENSE';
+  // Correct color and text logic for mode
+  const btnColor = mode === "defense" ? "#3d40ff" : "#ff2400"; // Blue for defense, red for offense
+  const btnText = mode === "defense" ? "DEFENSE" : "OFFENSE"; // Reflect current mode
 
   return (
     <div className="control-panel-content">
-      <button
-        className="mode-btn"
-        style={{
-          background: btnColor,
-          color: "#fff"
-        }}
-        onClick={toggleMode}
-      >
-        {btnText}
-      </button>
-
-
+      {/* Row 1: Mode button and tabs */}
+      <div className="mode-tabs-row">
+        <button
+          className={`mode-btn ${mode === "defense" ? "active" : ""}`}
+          onClick={toggleMode}
+          style={{ background: btnColor }}
+        >
+          {btnText}
+        </button>
+        <button
+          className={`tab-btn ${tab === "manual" ? "active" : ""}`}
+          onClick={() => toggleTab("manual")}
+        >
+          Manual
+        </button>
+        <button
+          className={`tab-btn ${tab === "auto" ? "active" : ""}`}
+          onClick={() => toggleTab("auto")}
+        >
+          Auto
+        </button>
+      </div>
 
       {/* Row 2: API spinner */}
-      <ApiSpinnerRow
-        isLocked={isLocked}
-        fireResult={fireResult}
-      />
+      <ApiSpinnerRow isLocked={isLocked} fireResult={fireResult} />
 
-      {/* Row 1: Balance + Ship/Missile size */}
+      {/* Row 3: Balance + Ship/Missile size */}
       <div className="api-meta-row">
         <div className="balance-box">$1250.08</div>
+        <button className="reset-btn" onClick={() => setIsLocked(false)}>
+          RESET
+        </button>
         <div className="size-label-box">{rightLabel}</div>
       </div>
 
-      {/* Controls row */}
-      <div className="controls-top" style={{ marginTop: "1.2em", display: "flex", gap: "1em", justifyContent: "center" }}>
-        <button className="ui-btn reset" onClick={() => { setIsLocked(false); setFireResult(null); setSliderValue(0); }}>RESET</button>
-        <button className="ui-btn rotate">
-          <span className="rotate-icon" style={{ fontSize: "1.4em" }}>⟳</span>
+      {/* Row 4: Buttons and Slider */}
+      <div className="action-buttons-row">
+        <button className="fire-btn" onClick={handleFire}>
+          + FIRE
         </button>
-        <button
-          className="ui-btn fire"
-          style={{ background: "#ff2400", color: "#fff" }}
-          onClick={handleFire}
-        >★ FIRE</button>
-        <button
-          className="ui-btn lock"
-          style={{
-            background: isLocked ? "#bbb" : "#2ecc40",
-            color: "#fff"
-          }}
-          disabled={isLocked}
-          onClick={handleLock}
-        >ANCHOR</button>
-      </div>
-
-      {/* Slider row */}
-      <div className="slider-row" style={{ margin: "1.5em 0 1em 0", display: "flex", justifyContent: "center" }}>
-        <input
-          type="range"
-          min="0"
-          max="4"
-          step="1"
-          className="horizontal-slider"
-          style={{ width: "70%" }}
-          value={sliderValue}
-          onChange={handleSliderChange}
-          disabled={isLocked}
-        />
-      </div>
-
-      {/* Info row */}
-      <div className="info-row" style={{ display: "flex", gap: "1em", justifyContent: "center", margin: "1em 0" }}>
-        <div className="info-box1">%towi</div>
-        <div className="info-box2">multi-x-d</div>
-      </div>
-
-      {/* Bet input row */}
-      <div className="bet-row" style={{ margin: "1.5em 0" }}>
-        <div className="betinput-bar" style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+        <div className="slider-row">
           <input
-            className="betinput-field"
-            type="number"
+            type="range"
             min="0"
-            placeholder="Bet Amount"
-            style={{ flex: 1, padding: "0.5em", borderRadius: "6px", border: "1px solid #333" }}
+            max="4"
+            step="1"
+            className="horizontal-slider"
+            value={sliderValue}
+            onChange={handleSliderChange}
+            disabled={isLocked}
           />
-          <div className="betinput-btns" style={{ display: "flex", gap: "0.3em" }}>
-            <button className="ui-btn small">2X</button>
-            <button className="ui-btn small">1/2</button>
-            <button className="ui-btn small">MAX</button>
-          </div>
         </div>
+        <button className="anchor-btn" onClick={handleLock}>
+          ANCHOR
+        </button>
       </div>
 
-      {/* Tabs row */}
-      <div className="tabs-row" style={{ display: "flex", marginTop: "1em" }}>
-        <button className="tab manual selected">MANUAL</button>
-        <button className="tab auto">AUTO</button>
+      {/* Fixed Bet Input Bar */}
+      <div className="bet-input-row">
+        <input
+          type="text"
+          className="bet-input"
+          placeholder="Bet Amount"
+        />
+        <div className="bet-buttons">
+          <button className="bet-btn">2x</button>
+          <button className="bet-btn">1/2</button>
+          <button className="bet-btn">MAX</button>
+        </div>
       </div>
     </div>
   );
