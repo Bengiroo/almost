@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 const GRID_SIZE = 10;
 
@@ -33,14 +33,13 @@ function getOverlay(mode) {
 function getPlacement(startRow, startCol, option, orientation) {
   let width = option.width;
   let height = option.height || option.min;
-  let rotation = 0;
+
+  // For horizontal, swap width and height
   if (orientation === "horizontal") {
     [width, height] = [height, width];
-    rotation = 0;
-  } else {
-    rotation = 90;
   }
 
+  // Snap inside grid
   if (startCol + width > GRID_SIZE) startCol = GRID_SIZE - width;
   if (startRow + height > GRID_SIZE) startRow = GRID_SIZE - height;
 
@@ -50,7 +49,7 @@ function getPlacement(startRow, startCol, option, orientation) {
       positions.push([startRow + dr, startCol + dc]);
     }
   }
-  return { positions, startRow, startCol, width, height, rotation };
+  return { positions, startRow, startCol, width, height };
 }
 
 export default function GridArea({
@@ -58,32 +57,35 @@ export default function GridArea({
   sliderValue = 0,
   rotation = "horizontal",
 }) {
-  // Persisted selection for each mode
-  const [placed, setPlaced] = useState({ defense: null, offense: null });
-  // Hover area (desktop only)
+  // All placed items (ships or missiles), each is {positions, ...}
+  const [placed, setPlaced] = useState([]);
+
+  // Hover preview (for current selection)
   const [hover, setHover] = useState(null);
 
-  // Current placed for this mode
-  const currentPlaced = placed[mode === "defense" ? "defense" : "offense"];
+  // Clear hover preview on control changes
+  useEffect(() => setHover(null), [mode, sliderValue, rotation]);
 
-  // Clear hover on control changes
-  useEffect(() => {
-    setHover(null);
-  }, [mode, sliderValue, rotation]);
+  // Helper: is cell in any placed object?
+  function isPlaced(row, col) {
+    return placed.some(item =>
+      item.positions.some(([r, c]) => r === row && c === col)
+    );
+  }
 
-  // Helper: Is [row,col] in current placed selection?
-  const isPlaced = useCallback(
-    (row, col) =>
-      currentPlaced &&
-      currentPlaced.positions.some(([r, c]) => r === row && c === col),
-    [currentPlaced]
-  );
-  // Helper: Is [row,col] in current hover area?
-  const isHover = useCallback(
-    (row, col) =>
-      hover && hover.positions.some(([r, c]) => r === row && c === col),
-    [hover]
-  );
+  // Helper: is cell in current hover preview?
+  function isHover(row, col) {
+    return hover && hover.positions.some(([r, c]) => r === row && c === col) && !isPlaced(row, col);
+  }
+
+  // Helper: does a new placement overlap any placed?
+  function overlapsAny(positions) {
+    return placed.some(item =>
+      item.positions.some(
+        ([r, c]) => positions.some(([r2, c2]) => r === r2 && c === c2)
+      )
+    );
+  }
 
   // Hover logic
   const handleCellHover = (row, col) => {
@@ -93,59 +95,26 @@ export default function GridArea({
   };
   const handleCellLeave = () => setHover(null);
 
-  // Click logic: toggles persistent placement, resets on selecting any selected cell
+  // Click logic: place if no overlap
   const handleCellClick = (row, col) => {
-    if (isPlaced(row, col)) {
-      setPlaced((old) => ({ ...old, [mode]: null }));
+    const option = getOption(mode, sliderValue);
+    const newPlacement = getPlacement(row, col, option, rotation);
+
+    // Don't allow overlapping placements
+    if (overlapsAny(newPlacement.positions)) {
       setHover(null);
       return;
     }
-    const option = getOption(mode, sliderValue);
-    const newPlacement = getPlacement(row, col, option, rotation);
-    setPlaced((old) => ({
-      ...old,
-      [mode]: newPlacement,
-    }));
+
+    setPlaced(prev => [...prev, { ...newPlacement, mode }]);
     setHover(null);
   };
 
+  // Touch logic for mobile
   const handleCellTouch = (row, col) => handleCellClick(row, col);
 
-  // For rotation: if orientation is vertical, rotate the image 90deg
-  const getImgStyle = (isVert) => ({
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",
-    opacity: 0.85,
-    position: "absolute",
-    left: 0,
-    top: 0,
-    pointerEvents: "none",
-    borderRadius: "7px",
-    zIndex: 2,
-    filter: "drop-shadow(0 0 6px #48e6ff)",
-    transform: isVert ? "rotate(90deg)" : "none",
-    transition: "transform 0.2s"
-  });
-
-  const getHoverImgStyle = (isVert) => ({
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",
-    opacity: 0.5,
-    position: "absolute",
-    left: 0,
-    top: 0,
-    pointerEvents: "none",
-    borderRadius: "7px",
-    zIndex: 1,
-    filter: "drop-shadow(0 0 9px #48e6ff)",
-    transform: isVert ? "rotate(90deg)" : "none",
-    transition: "transform 0.2s"
-  });
-
-  // Determine if current orientation is vertical
-  const isVertical = rotation === "vertical";
+  // Reset all placements (add a button if you wish)
+  // For example, call setPlaced([]) in a parent or from a button
 
   return (
     <div
@@ -166,7 +135,7 @@ export default function GridArea({
         const row = Math.floor(idx / GRID_SIZE);
         const col = idx % GRID_SIZE;
         const lit = isPlaced(row, col);
-        const hov = isHover(row, col) && !lit;
+        const hov = isHover(row, col);
 
         return (
           <div
@@ -195,7 +164,7 @@ export default function GridArea({
                   ? "0 0 6px 2px #48e6ff88"
                   : "0 1px 2px 0 rgba(32, 34, 65, 0.09)",
               position: "relative",
-              cursor: "pointer",
+              cursor: overlapsAny([[row, col]]) ? "not-allowed" : "pointer",
               overflow: "hidden",
               zIndex: lit ? 10 : hov ? 5 : 1,
               transition: "box-shadow 0.16s, border 0.15s, background 0.15s",
@@ -212,7 +181,19 @@ export default function GridArea({
               <img
                 src={getOverlay(mode)}
                 alt={mode === "defense" ? "Ship" : "Missile"}
-                style={getImgStyle(isVertical)}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  opacity: 0.85,
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  pointerEvents: "none",
+                  borderRadius: "7px",
+                  zIndex: 2,
+                  filter: "drop-shadow(0 0 6px #48e6ff)"
+                }}
               />
             )}
             {/* Hover image */}
@@ -220,7 +201,19 @@ export default function GridArea({
               <img
                 src={getOverlay(mode)}
                 alt="Preview"
-                style={getHoverImgStyle(isVertical)}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  opacity: 0.5,
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  pointerEvents: "none",
+                  borderRadius: "7px",
+                  zIndex: 1,
+                  filter: "drop-shadow(0 0 9px #48e6ff)"
+                }}
               />
             )}
           </div>

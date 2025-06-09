@@ -17,32 +17,38 @@ const missileSizeOptions = [
   { label: "8x3", width: 8, height: 3 },
 ];
 
-export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
-  const [sliderValue, setSliderValue] = useState(0);
+export default function ControlArea({
+  mode,
+  toggleMode,
+  sliderValue,
+  setSliderValue,
+  rotation,
+  setRotation,
+  tab,
+  toggleTab,
+}) {
   const [isLocked, setIsLocked] = useState(false);
   const [fireResult, setFireResult] = useState(null);
-  const [rotation, setRotation] = useState("horizontal"); // Track rotation state
 
-  // Ship/Missile size label
+  // SAFELY get ship/missile for label
+  const ship = shipSizeOptions[sliderValue] || shipSizeOptions[0];
+  const missile = missileSizeOptions[sliderValue] || missileSizeOptions[0];
   const rightLabel =
     mode === "defense"
-      ? `*Ship*: ${shipSizeOptions[sliderValue]?.width}x${shipSizeOptions[sliderValue]?.min}`
-      : `Missile: ${missileSizeOptions[sliderValue]?.label}`;
+      ? `Ship: ${ship.name} (${ship.width}x${ship.min || ship.height})`
+      : `Missile: ${missile.label}`;
 
-  // Handle slider input
   const handleSliderChange = (e) => {
     setSliderValue(Number(e.target.value));
-    setFireResult(null); // Reset result on change
+    setFireResult(null);
     setIsLocked(false);
   };
 
-  // Simulate "place ship/missile" lock
   const handleLock = () => {
     setIsLocked(true);
-    setFireResult(null); // Clear old result
+    setFireResult(null);
   };
 
-  // Simulate "FIRE" action with fake API response
   const handleFire = () => {
     if (!isLocked) return;
     const randomVal = Math.random() * 100;
@@ -51,18 +57,14 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
     setIsLocked(false);
   };
 
-  // Handle rotation toggle
-  const handleRotate = () => {
-    setRotation((prev) => (prev === "horizontal" ? "vertical" : "horizontal"));
-  };
+  const handleRotate = () =>
+    setRotation(rotation === "horizontal" ? "vertical" : "horizontal");
 
-  // Correct color and text logic for mode
-  const btnColor = mode === "defense" ? "#3d40ff" : "#ff2400"; // Blue for defense, red for offense
-  const btnText = mode === "defense" ? "DEFENSE" : "OFFENSE"; // Reflect current mode
+  const btnColor = mode === "defense" ? "#3d40ff" : "#ff2400";
+  const btnText = mode === "defense" ? "DEFENSE" : "OFFENSE";
 
   return (
     <div className="control-panel-content">
-      {/* Row 1: Mode button and tabs */}
       <div className="mode-tabs-row">
         <button
           className={`tab-btn ${tab === "manual" ? "active" : ""}`}
@@ -85,10 +87,8 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
         </button>
       </div>
 
-      {/* Row 2: API spinner */}
       <ApiSpinnerRow isLocked={isLocked} fireResult={fireResult} />
 
-      {/* Row 3: Balance + Ship/Missile size */}
       <div className="api-meta-row">
         <div className="balance-box">$1250.08</div>
         <button className="reset-btn" onClick={() => setIsLocked(false)}>
@@ -97,7 +97,6 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
         <div className="size-label-box">{rightLabel}</div>
       </div>
 
-      {/* Row 4: Buttons and Slider */}
       <div className="action-buttons-row">
         <button className="fire-btn" onClick={handleFire}>
           + FIRE
@@ -117,13 +116,11 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
         <button className="anchor-btn" onClick={handleLock}>
           ANCHOR
         </button>
-        {/* Rotate Button */}
         <button className="rotate-btn" onClick={handleRotate}>
           Rotate: {rotation === "horizontal" ? "Horizontal" : "Vertical"}
         </button>
       </div>
 
-      {/* Fixed Bet Input Bar */}
       <div className="bet-input-container">
         <label className="bet-label">
           Bet Amount <span className="bet-icon">🎮</span>
