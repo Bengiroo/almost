@@ -114,16 +114,18 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
       </div>
 
       {/* Fixed Bet Input Bar */}
-      <div className="bet-input-row">
-        <input
-          type="text"
-          className="bet-input"
-          placeholder="Bet Amount"
-        />
-        <div className="bet-buttons">
-          <button className="bet-btn">2x</button>
-          <button className="bet-btn">1/2</button>
-          <button className="bet-btn">MAX</button>
+      <div className="bet-input-container">
+        <label className="bet-label">
+          Bet Amount <span className="bet-icon">🎮</span>
+        </label>
+        <div className="bet-input-box">
+          <span className="bet-currency">$</span>
+          <input type="number" className="bet-input" placeholder="0" />
+          <div className="bet-buttons">
+            <button>1/2</button>
+            <button>2X</button>
+            <button>Max</button>
+          </div>
         </div>
       </div>
     </div>
