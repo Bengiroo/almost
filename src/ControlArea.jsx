@@ -25,7 +25,7 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
   // Ship/Missile size label
   const rightLabel =
     mode === "defense"
-      ? `Ship: ${shipSizeOptions[sliderValue]?.width}x${shipSizeOptions[sliderValue]?.min}`
+      ? `*Ship*: ${shipSizeOptions[sliderValue]?.width}x${shipSizeOptions[sliderValue]?.min}`
       : `Missile: ${missileSizeOptions[sliderValue]?.label}`;
 
   // Handle slider input
