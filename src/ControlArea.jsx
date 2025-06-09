@@ -58,18 +58,19 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
     <div className="control-panel-content">
       {/* Row 1: Mode button and tabs */}
       <div className="mode-tabs-row">
+
+        <button
+          className={`tab-btn ${tab === "manual" ? "active" : ""}`}
+          onClick={() => toggleTab("manual")}
+        >
+          Manual
+        </button>
         <button
           className={`mode-btn ${mode === "defense" ? "active" : ""}`}
           onClick={toggleMode}
           style={{ background: btnColor }}
         >
           {btnText}
-        </button>
-        <button
-          className={`tab-btn ${tab === "manual" ? "active" : ""}`}
-          onClick={() => toggleTab("manual")}
-        >
-          Manual
         </button>
         <button
           className={`tab-btn ${tab === "auto" ? "active" : ""}`}
@@ -117,14 +118,17 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
       <div className="bet-input-container">
         <label className="bet-label">
           Bet Amount <span className="bet-icon">🎮</span>
+          <span className="demo-mode-text">
+            betting less than .01 enters demo mode
+          </span>
         </label>
         <div className="bet-input-box">
           <span className="bet-currency">$</span>
           <input type="number" className="bet-input" placeholder="0" />
           <div className="bet-buttons">
-            <button>1/2</button>
-            <button>2X</button>
-            <button>Max</button>
+            <button className="bet-btn">1/2</button>
+            <button className="bet-btn">2X</button>
+            <button className="bet-btn">Max</button>
           </div>
         </div>
       </div>
