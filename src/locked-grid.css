@@ -454,6 +454,28 @@ body {
   /* Add spacing between "Bet Amount" and the demo mode text */
 }
 
+/* Rotate button */
+.rotate-btn {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.rotate-btn:hover {
+  background-color: #555;
+  transform: scale(1.05);
+  /* Slightly enlarge on hover */
+}
+
+.rotate-btn:active {
+  background-color: #777;
+}
+
 /* Responsive adjustments for landscape mode */
 @media (orientation: landscape) {
   .control-area {

@@ -21,6 +21,7 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
   const [sliderValue, setSliderValue] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
   const [fireResult, setFireResult] = useState(null);
+  const [rotation, setRotation] = useState("horizontal"); // Track rotation state
 
   // Ship/Missile size label
   const rightLabel =
@@ -50,6 +51,11 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
     setIsLocked(false);
   };
 
+  // Handle rotation toggle
+  const handleRotate = () => {
+    setRotation((prev) => (prev === "horizontal" ? "vertical" : "horizontal"));
+  };
+
   // Correct color and text logic for mode
   const btnColor = mode === "defense" ? "#3d40ff" : "#ff2400"; // Blue for defense, red for offense
   const btnText = mode === "defense" ? "DEFENSE" : "OFFENSE"; // Reflect current mode
@@ -58,7 +64,6 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
     <div className="control-panel-content">
       {/* Row 1: Mode button and tabs */}
       <div className="mode-tabs-row">
-
         <button
           className={`tab-btn ${tab === "manual" ? "active" : ""}`}
           onClick={() => toggleTab("manual")}
@@ -111,6 +116,10 @@ export default function ControlArea({ mode, toggleMode, tab, toggleTab }) {
         </div>
         <button className="anchor-btn" onClick={handleLock}>
           ANCHOR
+        </button>
+        {/* Rotate Button */}
+        <button className="rotate-btn" onClick={handleRotate}>
+          Rotate: {rotation === "horizontal" ? "Horizontal" : "Vertical"}
         </button>
       </div>
 
