@@ -67,12 +67,7 @@ export default function ApiSpinnerRow({ isLocked, fireResult }) {
 
   // Neon glow for history
   function getHistoryGlow(val) {
-    if (val === "00.00") return "0 0 7px #fff, 0 0 15px #fff";
-    const v = parseFloat(val);
-    if (isNaN(v)) return "0 0 8px #fff";
-    return v >= 50
-      ? "0 0 7px #41ff80, 0 0 15px #41ff80, 0 0 22px #fff"
-      : "0 0 7px #ff4a4a, 0 0 15px #ff4a4a, 0 0 22px #fff";
+    return "none"; // Remove neon glow effect
   }
 
   const historyToShow = history.slice(-HISTORY_LENGTH);
@@ -89,10 +84,11 @@ export default function ApiSpinnerRow({ isLocked, fireResult }) {
             key={idx}
             className="spinner-history-value"
             style={{
-              color: "#fff",
+              color: getValueColor(num, fireResult), // Reflect the color logic of the current box
               opacity: 1,
               filter: "none",
-              textShadow: getHistoryGlow(num),
+              textShadow: "none", // Remove neon glow effect
+              margin: "0 0.2em", // Add horizontal spacing between numbers
             }}
           >
             {num}
