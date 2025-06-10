@@ -107,24 +107,24 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0;
-  padding: 0;
 }
 
 .balance-box,
 .size-label-box {
   background: #fff;
+  /* White background */
+  color: #000;
+  /* Black font */
   border-radius: 9px;
   padding: 0.00em 1.75em;
   font-weight: 700;
   font-size: 1.08rem;
-  color: #1a1a1a;
   min-width: 60px;
-  min-height: 32px;
+  min-height: 25px;
+  max-height: 25px;
   display: flex;
   align-items: center;
-  justify-content: right;
-  margin: 0 0.09em;
+  justify-content: center;
 }
 
 .control-panel {
@@ -247,7 +247,7 @@ body {
 
 .action-buttons-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   gap: 1em;
 }
@@ -578,4 +578,75 @@ body {
   font-weight: 700;
   pointer-events: none;
   user-select: none;
+}
+
+.slider-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  /* Even spacing for all elements */
+  gap: 10px;
+  /* Space between elements */
+  margin-top: 20px;
+}
+
+.reset-btn {
+  background-color: #f44336;
+  /* Red background */
+  color: white;
+  /* White text */
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rotate-btn {
+  width: 70px;
+  /* Keep the button size */
+  height: 70px;
+  border: none;
+  border-radius: 100%;
+  background-color: #2196f3;
+  /* Blue background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 7px #2196f3, 0 0 15px #2196f3, 0 0 22px #2196f3;
+  /* Dim blue glow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.horizontal-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 200px;
+  /* Slider width */
+  height: 8px;
+  /* Slider height */
+  border-radius: 5px;
+  /* Rounded corners */
+  background: #333;
+  /* Match theme with dark background */
+  outline: none;
+  /* Remove outline */
+}
+
+.horizontal-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  /* Thumb width */
+  height: 20px;
+  /* Thumb height */
+  border-radius: 50%;
+  /* Circular thumb */
+  background: #2196f3;
+  /* Blue thumb to match theme */
+  cursor: pointer;
+  box-shadow: 0 0 5px #2196f3, 0 0 10px #2196f3;
+  /* Neon glow effect */
 }

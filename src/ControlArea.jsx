@@ -99,12 +99,38 @@ export default function ControlArea({
 
       <div className="api-meta-row">
         <div className="balance-box">$1250.08</div>
+
+        <div className="size-label-box">{`${ship.width}x${ship.min || ship.height}`}</div>
+      </div>
+      <div className="slider-row">
         <button className="reset-btn" onClick={() => setIsLocked(false)}>
           RESET
         </button>
-        <div className="size-label-box">{rightLabel}</div>
-      </div>
-      <div className="slider-row">
+        <button className="rotate-btn" onClick={handleRotate}>
+          <svg
+            className="rotate-icon"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {rotation === "horizontal" ? (
+              <>
+                <path
+                  d="M4 12L8 8V10H16V8L20 12L16 16V14H8V16L4 12Z"
+                  fill="#fff"
+                />
+              </>
+            ) : (
+              <>
+                <path
+                  d="M12 4L8 8H10V16H8L12 20L16 16H14V8H16L12 4Z"
+                  fill="#fff"
+                />
+              </>
+            )}
+          </svg>
+        </button>
         <input
           type="range"
           min="0"
@@ -117,11 +143,26 @@ export default function ControlArea({
         />
       </div>
 
-      {/* New row for Rotate, Anchor, and Fire buttons */}
       <div className="action-buttons-row">
-        <button className="rotate-btn" onClick={handleRotate}></button>
-        <button className="anchor-btn" onClick={handleLock}></button>
-        <button className="fire-btn" onClick={handleFire}></button>
+        <div className="win-display">
+          {fireResult ? (
+            <div className={`result-display ${fireResult.won ? "won" : "lost"}`}>
+              {fireResult.won ? "WIN" : "LOSE"}: {fireResult.value.toFixed(2)}
+            </div>
+          ) : (
+            <div className="placeholder-display">Ready to Fire</div>
+          )}
+        </div>
+        <div className="button-group">
+          <div className="button-container">
+            <button className="anchor-btn" onClick={handleLock}></button>
+            <span className="button-label">Anchor</span>
+          </div>
+          <div className="button-container">
+            <button className="fire-btn" onClick={handleFire}></button>
+            <span className="button-label">Fire</span>
+          </div>
+        </div>
       </div>
 
       <div className="bet-input-container">

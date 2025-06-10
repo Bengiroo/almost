@@ -1,43 +1,95 @@
 .action-buttons-row {
   display: flex;
-  justify-content: center;
-  gap: 20px; /* Space between buttons */
-  margin-top: 20px;
+  justify-content: space-between;
+  /* Separate result display and buttons */
+  align-items: flex-start;
+  /* Align items at the top */
+  gap: 20px;
+  /* Space between result display and buttons */
 }
 
-.rotate-btn,
+.win-display {
+  flex: 1;
+  /* Take up available space */
+  display: flex;
+  flex-direction: column;
+  /* Stack content vertically */
+  justify-content: flex-start;
+  /* Align content at the top */
+  margin-right: auto;
+  /* Push buttons to the right */
+}
+
+.result-display {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #4caf50;
+  /* Green for WIN */
+  color: #fff;
+  /* White text */
+}
+
+.result-display.lost {
+  background-color: #f44336;
+  /* Red for LOSE */
+}
+
+.placeholder-display {
+  font-size: 14px;
+  color: #aaa;
+  /* Gray text for placeholder */
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  /* Keep buttons side by side */
+  align-items: flex-start;
+  /* Align buttons to the top */
+  gap: 10px;
+  /* Space between buttons */
+  margin-right: 20px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  /* Stack button and label vertically */
+  align-items: center;
+  /* Center-align content */
+}
+
 .anchor-btn,
 .fire-btn {
-  width: 70px; /* Button size */
+  width: 70px;
+  /* Button size */
   height: 70px;
   border: none;
-  border-radius: 15px; /* Rounded square shape */
-  background-size: contain; /* Ensure the PNG fits the button */
+  border-radius: 15px;
+  /* Rounded square shape */
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Professional shadow */
-  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
-}
-
-.rotate-btn {
-  background-color: #4caf50; /* Green background */
-  background-image: url('/assets/rotate.png'); /* Path to rotate PNG */
+  box-shadow: 0 2px 4px #e20909d0;
+  /* Reduced shadow intensity */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Smooth hover effect */
 }
 
 .anchor-btn {
-  background-color: #4caf50; /* Green background */
-  background-image: url('/assets/anchor.png'); /* Path to anchor PNG */
+  background-color: #4caf50;
+  /* Green background */
+  background-image: url('/assets/anchor.png');
+  /* Path to anchor PNG */
 }
 
 .fire-btn {
-  background-color: #f44336; /* Red background */
-  background-image: url('/assets/fire.png'); /* Path to fire PNG */
-}
-
-.rotate-btn:hover,
-.anchor-btn:hover,
-.fire-btn:hover {
-  transform: scale(1.1); /* Slight zoom effect */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+  background-color: #f44336;
+  /* Red background */
+  background-image: url('/assets/fire.png');
+  /* Path to fire PNG */
 }
