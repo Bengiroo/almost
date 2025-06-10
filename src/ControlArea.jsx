@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ApiSpinnerRow from "./ApiSpinnerRow";
+import BetDisplayRow from "./BetDisplayRow";
 
 const shipSizeOptions = [
   { name: "Patrol Boat", min: 3, max: 3, width: 1 },
@@ -63,8 +64,15 @@ export default function ControlArea({
   const btnColor = mode === "defense" ? "#3d40ff" : "#ff2400";
   const btnText = mode === "defense" ? "DEFENSE" : "OFFENSE";
 
+  // Example values for display row; replace with your logic as needed
+  const winChance = 56.0;
+  const multiplier = 1.7679;
+
   return (
     <div className="control-panel-content">
+      {/* Display-only Win Chance / Multiplier row */}
+      <BetDisplayRow winChance={winChance} multiplier={multiplier} />
+
       <div className="mode-tabs-row">
         <button
           className={`tab-btn ${tab === "manual" ? "active" : ""}`}
@@ -96,28 +104,29 @@ export default function ControlArea({
         </button>
         <div className="size-label-box">{rightLabel}</div>
       </div>
+      <div className="slider-row">
+        <input
+          type="range"
+          min="0"
+          max="4"
+          step="1"
+          className="horizontal-slider"
+          value={sliderValue}
+          onChange={handleSliderChange}
+          disabled={isLocked}
+        />
+      </div>
 
+      {/* New row for Rotate, Anchor, and Fire buttons */}
       <div className="action-buttons-row">
-        <button className="fire-btn" onClick={handleFire}>
-          + FIRE
-        </button>
-        <div className="slider-row">
-          <input
-            type="range"
-            min="0"
-            max="4"
-            step="1"
-            className="horizontal-slider"
-            value={sliderValue}
-            onChange={handleSliderChange}
-            disabled={isLocked}
-          />
-        </div>
-        <button className="anchor-btn" onClick={handleLock}>
-          ANCHOR
-        </button>
         <button className="rotate-btn" onClick={handleRotate}>
-          Rotate: {rotation === "horizontal" ? "Horizontal" : "Vertical"}
+          🔄 Rotate: {rotation === "horizontal" ? "Horizontal" : "Vertical"}
+        </button>
+        <button className="anchor-btn" onClick={handleLock}>
+          ⚓ ANCHOR
+        </button>
+        <button className="fire-btn" onClick={handleFire}>
+          🎯 FIRE
         </button>
       </div>
 

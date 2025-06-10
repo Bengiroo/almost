@@ -1,0 +1,42 @@
+.action-buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Space between buttons */
+  margin-top: 15px;
+}
+
+.rotate-btn,
+.anchor-btn,
+.fire-btn {
+  width: 60px; /* Adjust size */
+  height: 60px;
+  border: none;
+  border-radius: 12px; /* Rounded square shape */
+  font-size: 24px; /* Icon size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+.rotate-btn {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.anchor-btn {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.fire-btn {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.rotate-btn:hover,
+.anchor-btn:hover,
+.fire-btn:hover {
+  opacity: 0.9; /* Slight hover effect */
+}
