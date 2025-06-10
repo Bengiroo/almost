@@ -1,42 +1,43 @@
 .action-buttons-row {
   display: flex;
   justify-content: center;
-  gap: 15px; /* Space between buttons */
-  margin-top: 15px;
+  gap: 20px; /* Space between buttons */
+  margin-top: 20px;
 }
 
 .rotate-btn,
 .anchor-btn,
 .fire-btn {
-  width: 60px; /* Adjust size */
-  height: 60px;
+  width: 70px; /* Button size */
+  height: 70px;
   border: none;
-  border-radius: 12px; /* Rounded square shape */
-  font-size: 24px; /* Icon size */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 15px; /* Rounded square shape */
+  background-size: contain; /* Ensure the PNG fits the button */
+  background-repeat: no-repeat;
+  background-position: center;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Professional shadow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
 }
 
 .rotate-btn {
-  background-color: #4caf50; /* Green */
-  color: white;
+  background-color: #4caf50; /* Green background */
+  background-image: url('/assets/rotate.png'); /* Path to rotate PNG */
 }
 
 .anchor-btn {
-  background-color: #4caf50; /* Green */
-  color: white;
+  background-color: #4caf50; /* Green background */
+  background-image: url('/assets/anchor.png'); /* Path to anchor PNG */
 }
 
 .fire-btn {
-  background-color: #f44336; /* Red */
-  color: white;
+  background-color: #f44336; /* Red background */
+  background-image: url('/assets/fire.png'); /* Path to fire PNG */
 }
 
 .rotate-btn:hover,
 .anchor-btn:hover,
 .fire-btn:hover {
-  opacity: 0.9; /* Slight hover effect */
+  transform: scale(1.1); /* Slight zoom effect */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
 }

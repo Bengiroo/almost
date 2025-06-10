@@ -163,7 +163,7 @@ body {
   background-color: var(--panel-bg);
   z-index: 2;
   /* Lower z-index to tuck it behind other elements */
-  padding: 15px;
+  padding: 0px;
   box-sizing: border-box;
   transition: transform 0.3s ease, z-index 0.3s ease, opacity 0.3s ease;
   /* Smooth transition for interaction */

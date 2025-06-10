@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ApiSpinnerRow from "./ApiSpinnerRow";
 import BetDisplayRow from "./BetDisplayRow";
-
+import "./ControlArea.css"; // Assuming you have a CSS file for styles
 const shipSizeOptions = [
   { name: "Patrol Boat", min: 3, max: 3, width: 1 },
   { name: "Destroyer", min: 3, max: 3, width: 2 },
@@ -119,15 +119,9 @@ export default function ControlArea({
 
       {/* New row for Rotate, Anchor, and Fire buttons */}
       <div className="action-buttons-row">
-        <button className="rotate-btn" onClick={handleRotate}>
-          🔄 Rotate: {rotation === "horizontal" ? "Horizontal" : "Vertical"}
-        </button>
-        <button className="anchor-btn" onClick={handleLock}>
-          ⚓ ANCHOR
-        </button>
-        <button className="fire-btn" onClick={handleFire}>
-          🎯 FIRE
-        </button>
+        <button className="rotate-btn" onClick={handleRotate}></button>
+        <button className="anchor-btn" onClick={handleLock}></button>
+        <button className="fire-btn" onClick={handleFire}></button>
       </div>
 
       <div className="bet-input-container">
